@@ -1,0 +1,27 @@
+# --- segurança ---
+.env
+.aws/
+credentials
+*.pem
+*.key
+
+# --- infra ---
+*.transformed.yaml
+serverless-output.yaml
+.aws-sam/
+
+# --- python ---
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+build/
+dist/
+*.egg-info/
+
+# --- logs ---
+.DS_Store
+Thumbs.db
+*.log
