@@ -1,0 +1,23 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Infraestrutura S3 do Data Lake Projeto Sentinel'
+
+Resources:
+  SentinelDataLakeBucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: "data-master-sentinel-bruno-2026"
+      
+      # Bloqueio de acesso público
+      PublicAccessBlockConfiguration:
+        BlockPublicPolicy: true
+        BlockPublicAcls: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      
+      VersioningConfiguration:
+        Status: Enabled
+
+Outputs:
+  BucketName:
+    Value: !Ref SentinelDataLakeBucket
+    Description: Bucket criado para o Data Lake do Projeto Sentinel
