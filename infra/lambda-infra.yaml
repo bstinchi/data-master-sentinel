@@ -1,0 +1,40 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  # Permissão para a Lambda falar com o S3 e criar logs
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: S3WritePolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:PutObject
+                  - s3:HeadObject
+                  - s3:ListBucket
+                Resource: 
+                  - !Sub "arn:aws:s3:::data-master-sentinel-bruno-2026/*"
+                  - !Sub "arn:aws:s3:::data-master-sentinel-bruno-2026"
+
+  SentinelExtractorFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: sentinel-ssp-extractor
+      Handler: handler.lambda_handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Runtime: python3.12
+      Timeout: 300 # 5 minutos para dar tempo de baixar tudo
+      Code:
+        S3Bucket: !Sub "data-master-sentinel-bruno-2026" 
+        S3Key: lambda_code/handler.zip
