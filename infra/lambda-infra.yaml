@@ -22,6 +22,7 @@ Resources:
                 Action:
                   - s3:PutObject
                   - s3:HeadObject
+                  - s3:GetObject
                   - s3:ListBucket
                 Resource: 
                   - !Sub "arn:aws:s3:::data-master-sentinel-bruno-2026/*"
