@@ -1,29 +1,30 @@
-# 🛡️ Data Master Sentinel: Pipeline SSP-SP
+🛡️ Sentinel SP: Inteligência de Dados e Prevenção a Fraudes
+Este projeto, desenvolvido para o programa Data Master e implementa uma solução de Engenharia de Dados end-to-end em arquitetura Data Lakehouse. O foco é a extração e análise estratégica dos microdados de segurança pública da SSP-SP sobre roubos e furtos de dispositivos móveis, transformando-os em ativos de decisão para o setor bancário e de seguros.
 
-Este projeto faz parte do programa **Data Master** e foca na construção de um pipeline de dados robusto para a extração, armazenamento e análise dos microdados de segurança pública da Secretaria de Segurança Pública de São Paulo (SSP-SP), referentes aos anos de 2025 e 2026.
+🏗️ Arquitetura da Solução
+O pipeline utiliza a Metodologia de Medalhão em nuvem AWS, garantindo integridade, escalabilidade e custo-eficiência:
 
-## 🏗️ Arquitetura do Projeto
-O pipeline utiliza uma **Medallion Architecture** (Arquitetura de Medalhão) para garantir a integridade e rastreabilidade dos dados:
+Raw (Bronze): Dados brutos extraídos via AWS Lambda e armazenados em CSV. A ingestão é orquestrada por eventos, disparando o fluxo de processamento imediatamente.
 
-* **Raw (Bronze):** Dados crus, extraídos diretamente do portal SSP via AWS Lambda, armazenados em formato CSV com particionamento por data de ingestão.
-* **Trusted (Silver):** Dados limpos, tipados e convertidos para o formato colunar Parquet.
-* **Refined (Gold):** Tabelas agregadas e otimizadas para consumo de BI e análise analítica.
+Trusted (Silver): Processamento distribuído via AWS Glue (PySpark) para limpeza, normalização (remoção de acentos/caracteres especiais) e anonimização de dados sensíveis (PII) com Hash SHA-256.
 
-## 📁 Estrutura do Repositório
-```text
+Refined (Gold): Dados agregados, convertidos para Parquet e particionados por ANO_BO e MES para alta performance de consulta no Amazon Athena e QuickSight.
+
+📁 Estrutura do Repositório
+Plaintext
 data-master-sentinel/
-├── docs/                 # Dicionário de dados e diagramas de arquitetura.
-├── infra/                # Templates CloudFormation para provisionamento AWS.
+├── delivery_banca/       # PACOTE CONSOLIDADO PARA AVALIAÇÃO (Scripts finais e amostras).
+├── infra/                # Templates CloudFormation (IaC) para S3, Glue e Lambda.
 ├── scripts/              
-│   └── lambda/           # Código Python da função de extração (Scraper/Download).
-├── .gitignore            # Filtro de segurança para arquivos sensíveis e caches.
-└── README.md             # Documentação principal do projeto.
+│   ├── lambda/           # Handler de extração e orquestração (Boto3).
+│   └── glue/             # Jobs PySpark para transformações Silver e Gold.
+└── README.md             # Documentação principal.
+
 🛠️ Tecnologias Utilizadas
-Linguagem: Python 3.12
-
-Cloud: AWS (S3, Lambda, CloudFormation)
-
-IaC: CloudFormation
+Linguagem: Python 3.12 / PySpark.
+Cloud (AWS): S3, Lambda, Glue, Athena, QuickSight.
+Observabilidade: CloudWatch Alarms, Cloudtrail e SNS para notificações de falhas em tempo real.
+Infraestrutura como Código (IaC): CloudFormation.
 
 Bibliotecas Principais: boto3, requests, pandas
 
@@ -46,18 +47,26 @@ source .venv/bin/activate  # Linux/Mac
 
 # Instale as dependências
 pip install -r scripts/lambda/requirements.txt
-3. Deploy da Infraestrutura
-Bash
-aws cloudformation deploy \
-  --template-file infra/s3-bucket.yaml \
-  --stack-name sentinel-infra-s3
-🛡️ Segurança e Governança
+
+
+🔧 Como Executar
+Infraestrutura: Realize o deploy dos templates na pasta /infra para provisionar o Data Lake e as permissões IAM.
+Orquestração: Configure a Lambda para disparar o Glue Workflow.
+Catálogo: Execute o Glue Crawler para disponibilizar as tabelas no Athena.
+
+🚀 Proposta de Valor e Insights
+A camada Gold alimenta um dashboard geoespacial no QuickSight que permite:
+Mapa de Área: Identificação de zonas de risco por bairro para prevenção de fraudes.
+Perfil de Risco: Análise de marcas mais visadas para precificação de seguros.
+Comportamento Temporal: Distribuição de crimes por hora e dia.
+
+
+🔐 Segurança e Governança
+LGPD: Anonimização de dados através de técnicas de hashing.
+Custo-Eficiência: Ciclo de vida S3 (Glacier) para dados frios e retenção de logs de 14 dias no CloudWatch.
+Acesso: Bucket S3 com bloqueio de acesso público e controle via IAM Roles.
 Este projeto utiliza um arquivo .gitignore rigoroso para evitar o vazamento de chaves AWS e segredos.
-
 O bucket S3 possui bloqueio de acesso público habilitado.
-
 Todo dado na camada Raw é imutável.
 
-Desenvolvido por: Bruno
-
-Contexto: Projeto Prático - Programa Data Master 2026
+Desenvolvido por: Bruno Stinchi de Souza
