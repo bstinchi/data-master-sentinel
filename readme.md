@@ -38,8 +38,6 @@ Bibliotecas Principais: boto3, requests, pandas
 
 2. Instalação
 * Clone o repositório
-  *        git clone [https://github.com/seu-usuario/data-master-sentinel.git](https://github.com/seu-usuario/data-master-sentinel.git)
-  *        cd data-master-sentinel
 
 * Crie e ative o ambiente virtual
   *         python -m venv .venv
