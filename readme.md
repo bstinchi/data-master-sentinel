@@ -1,4 +1,4 @@
-# 🛡️ Sentinel SP: Inteligência de Dados e Prevenção a Fraudes
+# 🛡️ Sentinel: Inteligência de Dados e Prevenção a Fraudes
 
 Este projeto, desenvolvido para o programa **Data Master**, implementa uma solução de Engenharia de Dados *end-to-end* em arquitetura **Data Lakehouse**. O foco é a extração e análise estratégica dos microdados de segurança pública da SSP-SP sobre roubos e furtos de dispositivos móveis, transformando-os em ativos de decisão para o setor bancário e de seguros.
 
@@ -38,16 +38,16 @@ Bibliotecas Principais: boto3, requests, pandas
 
 2. Instalação
 * Clone o repositório
-git clone [https://github.com/seu-usuario/data-master-sentinel.git](https://github.com/seu-usuario/data-master-sentinel.git)
-cd data-master-sentinel
+  *        git clone [https://github.com/seu-usuario/data-master-sentinel.git](https://github.com/seu-usuario/data-master-sentinel.git)
+  *        cd data-master-sentinel
 
 * Crie e ative o ambiente virtual
-python -m venv .venv
-source .venv/bin/activate  (Linux/Mac)
-        .venv\Scripts\activate  (Windows)
+  *         python -m venv .venv
+  *         source .venv/bin/activate  (Linux/Mac)
+  *         .venv\Scripts\activate  (Windows)
 
 * Instale as dependências
-pip install -r scripts/lambda/requirements.txt
+  *        pip install -r scripts/lambda/requirements.txt
 
 
 ## 🔧 Como Executar
